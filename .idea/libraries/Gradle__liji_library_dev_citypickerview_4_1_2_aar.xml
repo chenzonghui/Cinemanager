@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: liji.library.dev:citypickerview:4.1.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b393e44ccd5b45d3f462daeaae520a5d/jars/classes.jar!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b393e44ccd5b45d3f462daeaae520a5d/jars/libs/pinyin4j-2.5.0.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b393e44ccd5b45d3f462daeaae520a5d/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3c3b0f96b81f0994e8c3171556bb0702/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3c3b0f96b81f0994e8c3171556bb0702/jars/libs/pinyin4j-2.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3c3b0f96b81f0994e8c3171556bb0702/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
