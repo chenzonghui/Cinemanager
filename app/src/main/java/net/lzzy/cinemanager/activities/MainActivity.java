@@ -18,9 +18,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import net.lzzy.cinemanager.R;
+import net.lzzy.cinemanager.fragments.AddCinemasFragment;
+import net.lzzy.cinemanager.fragments.BaseFragment;
 import net.lzzy.cinemanager.fragments.CinemasFragment;
 import net.lzzy.cinemanager.fragments.OrdersFragment;
 import net.lzzy.cinemanager.models.CinemaFactory;
+import net.lzzy.cinemanager.utils.ViewUtils;
 import net.lzzy.simpledatepicker.CustomDatePicker;
 import net.lzzy.sqllib.GenericAdapter;
 
@@ -31,7 +34,7 @@ import javax.xml.transform.Transformer;
 /**
  * @author Administrator
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddCinemasFragment.OnFragmentInteractionListener {
     public static final String EXTRA_NEW_CINEMA = "new_cinema";
     private FragmentManager manager = getSupportFragmentManager();
     public static final float MIN_DISTANCE = 100;
@@ -39,26 +42,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvTitle;
     private SparseArray<String> titleArray = new SparseArray<>();
     private SparseArray<Fragment> fragments = new SparseArray<>();
-    private SearchView searchView;
-    private ListView listView;
-    private LinearLayout addOrderView;
-    private Spinner spinner;
-    private ImageView imgQRCode;
-    private TextView tvDate;
-    private EditText edtMovieName;
-    private EditText edtPrice;
-    private CustomDatePicker picker;
-    private float touchX1;
     private boolean isDelete = false;
+    private SearchView search;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         setTitleMenu();
+        search.setOnQueryTextListener(new ViewUtils.AbstractQueryHandler() {
+            @Override
+            public boolean handleQuery(String kw) {
+                Fragment fragment = manager.findFragmentById(R.id.fragment_container);
+                if (fragment != null) {
+                    if (fragment instanceof BaseFragment) {
+                      ((BaseFragment) fragment).search(kw);
+                    }
+                }
+                return false;
+            }
+        });
     }
+
+
 
     private void setTitleMenu() {
         titleArray.put(R.id.bar_title_tv_add_order, "添加影院");
@@ -67,10 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleArray.put(R.id.bar_title_tv_add_order, "我的订单");
         layoutMenu = findViewById(R.id.bar_title_layout_menu);
         layoutMenu.setVisibility(View.GONE);
+
         findViewById(R.id.bar_title_layout_menu).setOnClickListener(this);
         tvTitle = findViewById(R.id.bar_title_tv);
         tvTitle.setText("我的订单");
-        searchView = findViewById(R.id.bar_title_sv);
+        search = findViewById(R.id.bar_title_sv);
         findViewById(R.id.bar_title_iv_menu).setOnClickListener(this);
         findViewById(R.id.bar_title_tv_my_order).setOnClickListener(this);
         findViewById(R.id.bar_title_tv_add_order).setOnClickListener(this);
@@ -82,17 +92,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        search.setVisibility(View.VISIBLE);
         layoutMenu.setVisibility(View.GONE);
         tvTitle.setText(titleArray.get(v.getId()));
-        FragmentTransaction transaction=manager.beginTransaction();
+        FragmentTransaction transaction = manager.beginTransaction();
         Fragment fragment = fragments.get(v.getId());
-
         if (fragment == null) {
             fragment = createFragment(v.getId());
-            fragments.put(v.getId(),fragment);
+            fragments.put(v.getId(), fragment);
             transaction.add(R.id.fragment_container,fragment);
         }
-        for (Fragment f:manager.getFragments()){
+        for (Fragment f : manager.getFragments()) {
             transaction.hide(f);
         }
         transaction.show(fragment).commit();
@@ -127,22 +137,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                break;
 //        }
 
-        private Fragment createFragment(int id) {
-            switch (id) {
-                case R.id.bar_title_tv_add_cinema:
-                    break;
-                case R.id.bar_title_tv_view_cinema:
-                    return new CinemasFragment();
-                case R.id.bar_title_tv_add_order:
-                    break;
-                case R.id.bar_title_tv_my_order:
-                    return new OrdersFragment();
-                default:
-                    break;
-            }
-            return null;
-
+    private Fragment createFragment(int id) {
+        switch (id) {
+            case R.id.bar_title_tv_add_cinema:
+                break;
+            case R.id.bar_title_tv_view_cinema:
+                return new CinemasFragment();
+            case R.id.bar_title_tv_add_order:
+                break;
+            case R.id.bar_title_tv_my_order:
+                return new OrdersFragment();
+            default:
+                break;
         }
+        return null;
 
     }
+
+    @Override
+    public void hideSearch() {
+        search.setVisibility(View.INVISIBLE);
+    }
+    @Override
+    public void cancelAddCinema() {
+        Fragment addCinemaFragment=fragments.get(R.id.bar_title_tv_add_cinema);
+        if (addCinemaFragment==null){
+            return;
+        }
+        Fragment cinemasFragment=fragments.get(R.id.bar_title_tv_view_cinema);
+        FragmentTransaction transaction=manager.beginTransaction();
+        if (cinemasFragment==null){
+            cinemasFragment=new CinemasFragment();
+            fragments.put(R.id.bar_title_tv_view_cinema,cinemasFragment);
+            transaction.add(R.id.fragment_container,cinemasFragment);
+
+        }
+        transaction.hide(addCinemaFragment).show(cinemasFragment).commit();
+        tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_cinema));
+    }
+
+}
 

@@ -97,7 +97,6 @@
     <ImageView
             android:id="@+id/add_order_rq_code"
             android:layout_width="match_parent"
-            android:src="@drawable/qr_code"
             android:layout_height="wrap_content"/>
 
 </LinearLayout>

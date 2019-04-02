@@ -1,5 +1,6 @@
 package net.lzzy.cinemanager.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import net.lzzy.cinemanager.R;
 import net.lzzy.cinemanager.models.Cinema;
 
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 /**
  * Created by lzzy_gxy on 2019/3/27.
@@ -35,10 +37,13 @@ public class AddCinemasFragment extends BaseFragment {
     private String area = "鱼峰区";
     private TextView tvArea;
     private  EditText etnName;
+    private OnFragmentInteractionListener listener;
+    private OnCityItemClickListener cinemalistenner;
 
 
     @Override
     protected void populate() {
+        listener.hideSearch();
         etnName= find(R.id.activity_cinema_dialog_edt);
         tvArea = find(R.id.activity_cinema_dialog_area);
 
@@ -59,6 +64,8 @@ public class AddCinemasFragment extends BaseFragment {
                 cinema.setLocation(tvArea.getText().toString());
                 //adapter.add(cinema);
                 etnName.setText("");
+
+
 
                 find(R.id.activity_cinema_dialog_layout_area).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -90,6 +97,37 @@ public class AddCinemasFragment extends BaseFragment {
 
     @Override
     public int getLayoutRes() {
-        return 0;
+        return R.layout.add_fragment_cinemas;
     }
+
+    @Override
+    public void search(String kw) {
+
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnFragmentInteractionListener) context;
+        }catch (CancellationException e){
+            throw  new ClassCastException(context.toString()+"必须实现OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    public interface OnFragmentInteractionListener{
+        void cancelAddCinema();
+
+        void  hideSearch();
+
+    }
+
+
 }

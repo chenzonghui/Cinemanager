@@ -23,6 +23,7 @@ public class CinemaFactory {
         repository = new SqlRepository<>(AppUtils.getContext(),Cinema.class, DbConstants.packager);
     }
 
+
     public List<Cinema> get(){
         return repository.get();
     }

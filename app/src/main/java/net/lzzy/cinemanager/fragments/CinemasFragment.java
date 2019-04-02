@@ -1,6 +1,7 @@
 package net.lzzy.cinemanager.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class CinemasFragment extends BaseFragment {
     private ListView lv;
     private List<Cinema> cinemas;
     private CinemaFactory factory = CinemaFactory.getInstance();
+    private GenericAdapter<Cinema> adapter;
 
     @Override
     protected void populate() {
@@ -57,6 +59,17 @@ public class CinemasFragment extends BaseFragment {
     @Override
     public int getLayoutRes() {
         return 0;
+    }
+
+    @Override
+    public void search(String kw) {
+        cinemas.clear();
+        if (TextUtils.isEmpty(kw)){
+            cinemas.addAll(factory.get());
+        }else{
+            cinemas.addAll(factory.searchCinemas(kw));
+        }
+        adapter.notifyDataSetChanged();
     }
 
 

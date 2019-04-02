@@ -10,7 +10,7 @@ import java.util.UUID;
  * @date 2019/3/11
  * Description:
  */
-public class BaseEntity {
+public abstract class BaseEntity {
     @AsPrimaryKey
     UUID id;
     BaseEntity(){
@@ -24,4 +24,6 @@ public class BaseEntity {
     public UUID getId() {
         return id;
     }
+
+
 }
