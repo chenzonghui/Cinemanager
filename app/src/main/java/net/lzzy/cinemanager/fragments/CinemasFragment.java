@@ -27,8 +27,19 @@ import java.util.List;
 public class CinemasFragment extends BaseFragment {
     private ListView lv;
     private List<Cinema> cinemas;
+    private Cinema cinema;
     private CinemaFactory factory = CinemaFactory.getInstance();
     private GenericAdapter<Cinema> adapter;
+    public CinemasFragment(){}
+
+
+
+
+    public CinemasFragment(Cinema cinema) {
+        this.cinema=cinema;
+    }
+
+
 
     @Override
     protected void populate() {
@@ -73,6 +84,9 @@ public class CinemasFragment extends BaseFragment {
     }
 
 
+    public void save(Cinema cinema) {
+        adapter.add(cinema);
+    }
 }
 
 

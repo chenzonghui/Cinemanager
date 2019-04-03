@@ -127,6 +127,7 @@ public class AddCinemasFragment extends BaseFragment {
 
         void  hideSearch();
 
+        void saveCinema(Cinema cinema);
     }
 
 

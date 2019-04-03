@@ -5,4 +5,6 @@ package net.lzzy.cinemanager.fragments;
  * Description:
  */
 public interface OnFragmentInteractionListener {
+    /**搜索菜单*/
+    void hideSearch();
 }

@@ -22,6 +22,7 @@ import net.lzzy.cinemanager.fragments.AddCinemasFragment;
 import net.lzzy.cinemanager.fragments.BaseFragment;
 import net.lzzy.cinemanager.fragments.CinemasFragment;
 import net.lzzy.cinemanager.fragments.OrdersFragment;
+import net.lzzy.cinemanager.models.Cinema;
 import net.lzzy.cinemanager.models.CinemaFactory;
 import net.lzzy.cinemanager.utils.ViewUtils;
 import net.lzzy.simpledatepicker.CustomDatePicker;
@@ -37,12 +38,13 @@ import javax.xml.transform.Transformer;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddCinemasFragment.OnFragmentInteractionListener {
     public static final String EXTRA_NEW_CINEMA = "new_cinema";
     private FragmentManager manager = getSupportFragmentManager();
-    public static final float MIN_DISTANCE = 100;
+
     private LinearLayout layoutMenu;
     private TextView tvTitle;
     private SparseArray<String> titleArray = new SparseArray<>();
     private SparseArray<Fragment> fragments = new SparseArray<>();
     private boolean isDelete = false;
+
     private SearchView search;
 
 
@@ -174,6 +176,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         transaction.hide(addCinemaFragment).show(cinemasFragment).commit();
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_cinema));
+        search.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void saveCinema(Cinema cinema) {
+        Fragment addCinemasFragment=fragments.get(R.id.bar_title_tv_add_cinema);
+        if (addCinemasFragment==null){
+            return;
+        }
+        Fragment cinemasFragment=fragments.get(R.id.bar_title_tv_view_cinema);
+        FragmentTransaction transaction=manager.beginTransaction();
+        if (cinemasFragment==null){
+
+            cinemasFragment=new CinemasFragment(cinema);
+            fragments.put(R.id.bar_title_tv_view_cinema,cinemasFragment);
+            transaction.add(R.id.fragment_container,cinemasFragment);
+        }else {
+            ((CinemasFragment)cinemasFragment).save(cinema);
+
+        }
+        transaction.hide(addCinemasFragment).show(cinemasFragment).commit();
+        tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_cinema));
+        search.setVisibility(View.VISIBLE);
+
+
     }
 
 }
