@@ -23,6 +23,7 @@ import com.lljjcoder.style.cityjd.JDCityPicker;
 
 import net.lzzy.cinemanager.R;
 import net.lzzy.cinemanager.models.Cinema;
+import net.lzzy.cinemanager.models.Order;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -120,6 +121,13 @@ public class AddCinemasFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    public void aveOrder(Order order) {
+    }
+
+    public void cancelAddOrder() {
+        
     }
 
     public interface OnFragmentInteractionListener{
